@@ -50,7 +50,7 @@ function App() {
   const [data,setData]=useState([]);
   const getData=()=>{
     var responseClone;
-    fetch('FSAE_2023/testing.json',{}
+    fetch('https://jbrea22.github.io/FSAE_2023/testing.json',{}
     )
       .then(function(response){
         responseClone=response.clone();
