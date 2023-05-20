@@ -1,96 +1,152 @@
 import './App.css';
 import Tachometer from './tachometer';
-import BPSpeedometer from './BPspeedometer';
 import BTSpeedometer from './BTspeedometer';
 import MPHSpeedometer from './MPHspeedometer';
-import axios from 'axios';
-import React, { Component, } from 'react';
+import React, {useState,useEffect} from 'react';
 import IMDimage from './dashboardIcons/IMDindicator.png';
 import AMSimage from './dashboardIcons/AMSindicator.png';
+import NormalBattery from './normalBattery';
+import LowBattery from './lowBattery';
 
-// Only displays warning light(s) when a fault occurs
-function Rendering(props) {
-  console.log(props.value);
-  if (props.value !== 10) {
-      return null;
+function AMS(props) {
+  // eslint-disable-next-line
+  if (props.value != 2) {
+    return null;
   }
-  if (props.value === 10) {
-      return (
-        <img src={IMDimage} alt="IMD indicator"/>
-      )
+  // eslint-disable-next-line
+  if (props.value == 2) {
+    return (
+      <img src={AMSimage} alt="AMS indicator"/>
+    )
+  }
+}
+
+function IMD(props) {
+  // eslint-disable-next-line
+  if (props.value != 2) {
+    return null;
+  }
+  // eslint-disable-next-line
+  if (props.value == 2) {
+    return (
+      <img src={IMDimage} alt="IMD indicator"/>
+    )
   }
 }  
 
-class App extends Component{
-  state={
-    persons:[],
-    AMSfault:[],
-    IMDfault:[],
-  }
- 
-  getData=()=>{
-    // https://mocki.io/v1/b771bbea-0568-4fc9-bf06-1a0c9470cca1
-    axios.get('https://mocki.io/v1/b771bbea-0568-4fc9-bf06-1a0c9470cca1').then(res => {
-    console.log(res);
-    this.setState({ persons: res.data });
-    //this.setState({ AMSfault: true });
-    //this.setState({ IMDfault: res.data });
-    });
-  }
-  
-  componentDidMount(){
-    this.getData();
-    // the values update every 1000 milliseconds
-    this.interval = setInterval(this.getData, 1000);
-  }
-  
-  componentWillUnmount(){
-    clearInterval(this.interval);
-  }
-
-  render(){
+function BATTERY(props) {
+  if (props.value <= 20) {
     return (
+      <LowBattery value={props.value}/>
+    )
+  }else{
+    return (
+      <NormalBattery value={props.value}/>
+    )
+  }
+}
+
+function App() {
+  const [data,setData]=useState([]);
+  const getData=()=>{
+    var responseClone;
+    fetch('fsae2021-22/testing.json',{}
+    )
+      .then(function(response){
+        responseClone=response.clone();
+        return response.json();
+      })
+      .then(function(myJson) {
+        console.log(myJson);
+        setData(myJson)
+      }, function(rejectionReason){
+        console.log('Error parsing JSON from response:',rejectionReason,responseClone);
+        responseClone.text()
+        .then(function(bodyText){
+          console.log('Received the following instead of valid JSON:',bodyText);
+        });
+      });
+  }
+
+  useEffect(()=>{
+    const intervalId=setInterval(() => {getData()},10);
+    return()=>{
+      clearInterval(intervalId);
+    };
+  },[]);
+
+  const textStyle = {
+    position: 'absolute',
+    top: 29,
+    right: 109,
+    color: "#fff",
+    fontFamily: "Arial",
+    fontSize: 21,
+    padding: 4,
+  }
+
+  return (
     <div className="App">
-      <div className="dials">
-      
-      <Tachometer
-          id="dial1"
-          value={this.state.persons.map(test => (test.id))}
-          title="RPM"
-          title2="x1000"
-        />
-        
-        <MPHSpeedometer 
-          id="dial2"
-          value={10}
-          title="MPH"
-        />
 
-        <BTSpeedometer
-          id="dial3"
-          value={55}
-          title="BATTERY TEMP"
-        />
+    {
+      data && data.length>0 && data.map((item)=><BTSpeedometer
+        id="dial3"
+        value={parseInt(item.MotorTemp)}
+        title="MOTOR"
+      />)
+    }
 
-        <BTSpeedometer
-          id="dial4"
-          value={60}
-          title="MOTOR TEMP"
-        />
+    {
+      data && data.length>0 && data.map((item)=><Tachometer
+        id="dial1"
+        value={(item.MotorSpeed/1000).toFixed(2)}
+        title="RPM"
+        title2="x1000"
+      />)
+    }
 
-        <BPSpeedometer
-          id="dial5"
-          value={88}
-          title="BATTERY"
-        />
+    {
+      data && data.length>0 && data.map((item)=><MPHSpeedometer 
+        id="dial2"
+        value={parseInt((item.MotorSpeed / 3.25) * 16 * Math.PI * 60 / 63360, 10)}
+        title="MPH"
+      />) 
+    }
 
-        <img src={AMSimage} alt="AMS indicator"/>
-        <Rendering value={this.state.persons.map(person => (person.id))}/>
-        
-      </div>
+    {
+      data && data.length>0 && data.map((item)=><BTSpeedometer
+        id="dial3"
+        value={parseInt(item.BatteryTemp)}
+        title="BATTERY"
+      />)
+    }  
+
+    {
+      data && data.length>0 && data.map((item)=><b style={textStyle}>{item.BatteryPct}% </b>)
+    }
+
+    <div className="battery">
+    {
+      data && data.length>0 && data.map((item)=><BATTERY
+        value={parseInt(item.BatteryPct)}
+      />)
+    }
+    </div>
+    
+    {
+      data && data.length>0 && data.map((item)=><AMS
+        value={item.AMS}
+      />)
+    }
+
+    {
+      data && data.length>0 && data.map((item)=><IMD
+        value={item.IMD}
+      />)
+    }
+
     </div>
   );
-}
 }
 
 export default App;
