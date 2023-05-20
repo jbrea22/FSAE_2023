@@ -15,7 +15,7 @@ const styles = {
   },
   title: {
     fontSize: ".7em",
-    color: "#000",
+    color: "#FFF",
     fontWeight: "bold",
     position: "relative",
     top: "-200px",
@@ -32,9 +32,10 @@ const BPSpeedometer = ({ id, value, title}) => {
             value={value}
             width={150}
             needleHeightRatio={.73}
-            needleColor="black"
+            needleColor="lightgray"
             segments={1}
             maxSegmentLabels={0}
+            textColor="white"
             startColor="yellow"
             endColor="yellow"
             // eslint-disable-next-line

@@ -6,43 +6,43 @@ import MPHSpeedometer from './MPHspeedometer';
 import axios from 'axios';
 import React, { Component, } from 'react';
 import IMDimage from './dashboardIcons/IMDindicator.png';
-import BSPDimage from './dashboardIcons/BSPDindicator.png';
 import AMSimage from './dashboardIcons/AMSindicator.png';
 
-// IMPORTANT: faults can't be displayed until either dummy JSON or LoggerS car data is passed to them
+// Only displays warning light(s) when a fault occurs
+function Rendering(props) {
+  console.log(props.value);
+  if (props.value !== 10) {
+      return null;
+  }
+  if (props.value === 10) {
+      return (
+        <img src={IMDimage} alt="IMD indicator"/>
+      )
+  }
+}  
 
 class App extends Component{
   state={
     persons:[],
-    showHideAMS: false,
-    showHideIMD: false,
-    showHideBSPD: false,
+    AMSfault:[],
+    IMDfault:[],
   }
  
   getData=()=>{
+    // https://mocki.io/v1/b771bbea-0568-4fc9-bf06-1a0c9470cca1
     axios.get('https://mocki.io/v1/b771bbea-0568-4fc9-bf06-1a0c9470cca1').then(res => {
     console.log(res);
     this.setState({ persons: res.data });
+    //this.setState({ AMSfault: true });
+    //this.setState({ IMDfault: res.data });
     });
   }
   
   componentDidMount(){
     this.getData();
-    // the values update every 100 milliseconds. It's temporarily set to a large number
-    this.interval = setInterval(this.getData, 10000000000);
-    
-    // below are fault conditionals:
-    /* if(showHideAMS==true){
-          return <AMSIndicator />
-     }
-     if(showHideIMD==true){
-          return <IMDIndicator />
-     }
-     if(showHideBSPD==true){
-          return <BSPDIndicator />
-     } 
-*/
-    }
+    // the values update every 1000 milliseconds
+    this.interval = setInterval(this.getData, 1000);
+  }
   
   componentWillUnmount(){
     clearInterval(this.interval);
@@ -54,41 +54,40 @@ class App extends Component{
       <div className="dials">
       
       <Tachometer
-        id="dial1"
-        value={this.state.persons.map(person => (person.id))}
-        title="RPM"
-        title2="x1000"
+          id="dial1"
+          value={this.state.persons.map(test => (test.id))}
+          title="RPM"
+          title2="x1000"
         />
         
         <MPHSpeedometer 
-        id="dial2"
-        value={10}
-        title="MPH"
+          id="dial2"
+          value={10}
+          title="MPH"
         />
 
         <BTSpeedometer
-        id="dial3"
-        value={110}
-        title="BATTERY TEMP"
+          id="dial3"
+          value={55}
+          title="BATTERY TEMP"
         />
 
         <BTSpeedometer
-        id="dial4"
-        value={125}
-        title="ENGINE TEMP"
+          id="dial4"
+          value={60}
+          title="MOTOR TEMP"
         />
 
         <BPSpeedometer
-        id="dial5"
-        value={88}
-        title="BATTERY"
+          id="dial5"
+          value={88}
+          title="BATTERY"
         />
 
-        <img src={BSPDimage} alt="BSPD indicator"/>
-        <img src={IMDimage} alt="IMD indicator"/>
         <img src={AMSimage} alt="AMS indicator"/>
+        <Rendering value={this.state.persons.map(person => (person.id))}/>
         
-    </div>
+      </div>
     </div>
   );
 }

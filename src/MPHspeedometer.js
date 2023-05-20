@@ -16,7 +16,7 @@ const styles = {
   },
   title: {
     fontSize: "1em",
-    color: "#000",
+    color: "#FFF",
     fontWeight: "bold",
     position: "relative",
     top: "-126px",
@@ -34,9 +34,10 @@ const MPHSpeedometer = ({ id, value, title}) => {
             valueTextFontSize={'40px'}
             paddingHorizontal={20}
             paddingVertical={20}
-            needleColor="black"
+            needleColor="green"
             needleHeightRatio={.87}
             segments={10}
+            textColor="white"
             startColor="darkgreen"
             endColor="yellow"
           />

@@ -16,7 +16,7 @@ const styles = {
   },
   title: {
     fontSize: "1em",
-    color: "#000",
+    color: "#FFF",
     fontWeight: "bold",
     position: "relative",
     top: "-125px",
@@ -24,7 +24,7 @@ const styles = {
   },
   title2: {
     fontSize: ".7em",
-    color: "#000",
+    color: "#FFF",
     fontWeight: "bold",
     position: "relative",
     top: "-125px",
@@ -42,10 +42,11 @@ const Tachometer = ({ id, value, title, title2}) => {
             valueTextFontSize={'40px'}
             paddingHorizontal={20}
             paddingVertical={20}
-            needleColor="black"
+            needleColor="white"
             needleHeightRatio={.87}
             segments={10}
             labelFontSize={'14px'}
+            textColor="white"
             startColor="green"
             endColor="white"
           />
