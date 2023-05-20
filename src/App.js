@@ -50,7 +50,7 @@ function App() {
   const [data,setData]=useState([]);
   const getData=()=>{
     var responseClone;
-    fetch('fsae2021-22/testing.json',{}
+    fetch('FSAE_2023/testing.json',{}
     )
       .then(function(response){
         responseClone=response.clone();
