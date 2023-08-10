@@ -1,7 +1,7 @@
-# FSAE 2023
-React program for Formula SAE Electric 2023.
+# FSAE 2024
+In progress for Formula SAE Electric 2024.
 
-This is a React program that receives CAN data (from a JSON file) and displays this data in real-time. If a fault is detected in the race car, then a warning light will display per regulations. Gauges are created using react-d3-speedometer.
+This is a React program that receives CAN data (from a JSON file) and displays this data in real-time. If a fault is detected in the race car, then a warning light will display per regulations.
 
 View a static simulation of the project here: https://jbrea22.github.io/FSAE_2023/ <br />
 **(Note: components might be cropped since the project settings are optimized for the vehicle's screen dimensions.)**
