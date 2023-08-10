@@ -50,6 +50,8 @@ function App() {
   const [data,setData]=useState([]);
   const getData=()=>{
     var responseClone;
+    // to run locally, use: fsae2023/testing.json
+    // to run on Github, use: https://raw.githubusercontent.com/jbrea22/FSAE_2023/master/public/testing.json
     fetch('https://raw.githubusercontent.com/jbrea22/FSAE_2023/master/public/testing.json',{}
     )
       .then(function(response){
@@ -96,15 +98,14 @@ function App() {
       />)
     }
 
-    {
-      data && data.length>0 && data.map((item)=><Tachometer
-        id="dial1"
-        value={(item.MotorSpeed/1000).toFixed(2)}
+{
+      data && data.length>0 && data.map((item)=><Tachometer 
+        id="dial2"
+        value={parseInt(item.MotorSpeed, 10)}
         title="RPM"
-        title2="x1000"
-      />)
+      />) 
     }
-
+    
     {
       data && data.length>0 && data.map((item)=><MPHSpeedometer 
         id="dial2"
