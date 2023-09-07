@@ -7,3 +7,7 @@ View a static simulation of the project here: https://jbrea22.github.io/FSAE_202
 **(Note: components might be cropped since the project settings are optimized for the vehicle's screen dimensions.)**
 
 View the full project here: https://github.com/jbrea22/FSAE_2023/tree/master
+
+Libraries used:
+react-d3-speedometer https://www.npmjs.com/package/react-d3-speedometer
+react-gauge-component https://github.com/antoniolago/react-gauge-component
