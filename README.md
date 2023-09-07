@@ -8,6 +8,6 @@ View a static simulation of the project here: https://jbrea22.github.io/FSAE_202
 
 View the full project here: https://github.com/jbrea22/FSAE_2023/tree/master
 
-Libraries used:
-react-d3-speedometer https://www.npmjs.com/package/react-d3-speedometer
+Libraries used: <br />
+react-d3-speedometer https://www.npmjs.com/package/react-d3-speedometer <br />
 react-gauge-component https://github.com/antoniolago/react-gauge-component
